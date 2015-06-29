@@ -23,7 +23,7 @@ namespace Study.Business
             {
                 Name = groupTeam.Name,
                 Description = groupTeam.Description,
-                CreateDate = groupTeam.CreateDate
+                CreateDate = DateTime.Now
             };
 
             // faz a conexão com a base
