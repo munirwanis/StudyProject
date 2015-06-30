@@ -19,14 +19,15 @@ namespace Study.Business
         public static void Create(DTO.UserTeamDTO userTeam)
         {
             // preencho o objeto da tabela
-            var userTeamTable = new UserTeamTable { 
-            CreateDate = userTeam.CreateDate,
-            FullName = userTeam.FullName,
-            GroupTeamId = userTeam.GroupTeamId,
-            IsEnabled = userTeam.IsEnabled,
-            Login = userTeam.Login,
-            Password = userTeam.Password,
-            GroupTeamTable = GroupTeamMethods.Find(userTeam.GroupTeamId)
+            var userTeamTable = new UserTeamTable
+            {
+                CreateDate = userTeam.CreateDate,
+                FullName = userTeam.FullName,
+                GroupTeamId = userTeam.GroupTeamId,
+                IsEnabled = userTeam.IsEnabled,
+                Login = userTeam.Login,
+                Password = userTeam.Password,
+                GroupTeamTable = GroupTeamMethods.Find(userTeam.GroupTeamId)
             };
 
             // conecta com a base
@@ -71,12 +72,23 @@ namespace Study.Business
         {
             // preencho os items que serão atualizados
             var itemToUpdate = Find(userTeamId);
-            itemToUpdate.FullName = userTeam.FullName;
-            itemToUpdate.GroupTeamId = userTeam.GroupTeamId;
-            itemToUpdate.GroupTeamTable = GroupTeamMethods.Find(userTeam.GroupTeamId);
+            if (userTeam.FullName != null)
+            {
+                itemToUpdate.FullName = userTeam.FullName;
+            }
+            if (userTeam.GroupTeamId != 0)
+            {
+                itemToUpdate.GroupTeamId = userTeam.GroupTeamId;
+                itemToUpdate.GroupTeamTable = GroupTeamMethods.Find(userTeam.GroupTeamId);
+            }
+
             itemToUpdate.IsEnabled = userTeam.IsEnabled;
-            itemToUpdate.Password = userTeam.Password;
-            
+
+            if (userTeam.Password != null)
+            {
+                itemToUpdate.Password = userTeam.Password;
+            }
+
             // faço a conexão com a base
             using (BaseContext db = new BaseContext())
             {

@@ -72,8 +72,14 @@ namespace Study.Business
         {
             // encontra e atualiza os campos do item da tabela
             var groupTeamToUpdate = Find(groupTeamId);
-            groupTeamToUpdate.Name = groupTeam.Name;
-            groupTeamToUpdate.Description = groupTeam.Description;
+            if (groupTeam.Name != null)
+            {
+                groupTeamToUpdate.Name = groupTeam.Name;   
+            }
+            if (groupTeam.Description != null)
+            {
+                groupTeamToUpdate.Description = groupTeam.Description;
+            }
 
             // faz a conexão com a base
             using (BaseContext db = new BaseContext())
