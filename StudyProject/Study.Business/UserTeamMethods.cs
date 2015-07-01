@@ -4,20 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Odbc;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Study.Business.DTO;
 
 namespace Study.Business
 {
     /// <summary>
     /// Métodos da tabela UserTeam
     /// </summary>
-    public class UserTeamMethods
+    public class UserTeamMethods : IMethods<UserTeamTable, UserTeamDTO>
     {
         // Cria um User na tabela
-        public static void Create(DTO.UserTeamDTO userTeam)
+        public void Create(DTO.UserTeamDTO userTeam)
         {
+            var groupTeamMethods = new GroupTeamMethods();
             // preencho o objeto da tabela
             var userTeamTable = new UserTeamTable
             {
@@ -27,7 +30,7 @@ namespace Study.Business
                 IsEnabled = userTeam.IsEnabled,
                 Login = userTeam.Login,
                 Password = userTeam.Password,
-                GroupTeamTable = GroupTeamMethods.Find(userTeam.GroupTeamId)
+                GroupTeamTable = groupTeamMethods.Find(userTeam.GroupTeamId)
             };
 
             // conecta com a base
@@ -41,7 +44,7 @@ namespace Study.Business
             }
         }
         // Lista os Users da tabela
-        public static List<UserTeamTable> Display()
+        public List<UserTeamTable> Display()
         {
             IList<UserTeamTable> query = null;
 
@@ -55,7 +58,7 @@ namespace Study.Business
             return query.ToList();
         }
         // Encontra o Item na tabela de User
-        public static UserTeamTable Find(int userTeamId)
+        public UserTeamTable Find(int userTeamId)
         {
             // faço a conexão com a base
             using (BaseContext db = new BaseContext())
@@ -68,8 +71,9 @@ namespace Study.Business
             }
         }
         // Atualiza o Item da tabela User
-        public static void Update(int userTeamId, DTO.UserTeamDTO userTeam)
+        public void Update(int userTeamId, DTO.UserTeamDTO userTeam)
         {
+            var groupTeamMethods = new GroupTeamMethods();
             // preencho os items que serão atualizados
             var itemToUpdate = Find(userTeamId);
             if (userTeam.FullName != null)
@@ -79,7 +83,7 @@ namespace Study.Business
             if (userTeam.GroupTeamId != 0)
             {
                 itemToUpdate.GroupTeamId = userTeam.GroupTeamId;
-                itemToUpdate.GroupTeamTable = GroupTeamMethods.Find(userTeam.GroupTeamId);
+                itemToUpdate.GroupTeamTable = groupTeamMethods.Find(userTeam.GroupTeamId);
             }
 
             itemToUpdate.IsEnabled = userTeam.IsEnabled;
@@ -101,7 +105,7 @@ namespace Study.Business
             }
         }
         // Deleta o Item da tabela User
-        public static void Delete(int userTeamId)
+        public void Delete(int userTeamId)
         {
             // encontro o item da tabela que quero deletat
             var itemToDelete = Find(userTeamId);

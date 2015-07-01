@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Study.Business;
 using Study.Business.DTO;
@@ -16,21 +17,23 @@ namespace Study.Test
         [TestMethod]
         public void TestCreateGroup()
         {
+            var groupTeamMethods = new GroupTeamMethods();
             // crio o objeto de grupo
-            var groupTeam = new GroupTeamDTO { 
-            Name = "Test Name",
-            CreateDate = DateTime.Now,
-            Description = "Testing the description"
+            var groupTeam = new GroupTeamDTO
+            {
+                Name = "Test Name",
+                CreateDate = DateTime.Now,
+                Description = "Testing the description"
             };
 
             // vejo quantos items da tabela grupo tinham antes
-            int totalBefore = GroupTeamMethods.Display().Count;
+            int totalBefore = groupTeamMethods.Display().Count;
 
             // crio no grupo passando o objeto que criei
-            GroupTeamMethods.Create(groupTeam);
+            groupTeamMethods.Create(groupTeam);
 
             // vejo quantos items tem na tabela depois
-            int totalAfter = GroupTeamMethods.Display().Count;
+            int totalAfter = groupTeamMethods.Display().Count;
 
             // verifico se o total antes+1 é o mesmo que o total depois
             // se for, significa que foi criado
@@ -40,6 +43,7 @@ namespace Study.Test
         [TestMethod]
         public void TestUpdate()
         {
+            var update = new GroupTeamMethods();
             // crio o objeto de grupo para atualizar
             var groupTeam = new GroupTeamDTO
             {
@@ -47,13 +51,14 @@ namespace Study.Test
                 Description = "FESTA"
             };
 
-            /// atualizo na tabela passando o item que quero modificar
-            /// e o objeto que modifiquei
-            GroupTeamMethods.Update(1, groupTeam);
+            var lastItemOfTheList = update.Display().LastOrDefault().GroupTeamId;
+
+            // atualizo na tabela passando o item que quero modificar
+            // e o objeto que modifiquei
+            update.Update(lastItemOfTheList, groupTeam);
 
             // guardo o objeto que atualizei
-            var responseFind = new GroupTeamTable();
-            responseFind = GroupTeamMethods.Find(1);
+            var responseFind = update.Find(lastItemOfTheList);
 
             // verifico se o item que criei possui a o mesmo nome do objeto que mandei
             // se sim, significa que o update está ok
@@ -63,11 +68,14 @@ namespace Study.Test
         [TestMethod]
         public void TestDelete()
         {
+            var groupTeamMethods = new GroupTeamMethods();
+
+            var lastItemOfTheList = groupTeamMethods.Display().LastOrDefault().GroupTeamId;
             // deleto o item que quero
-            GroupTeamMethods.Delete(2);
+            groupTeamMethods.Delete(lastItemOfTheList);
 
             // tento encontrar o item que deletei
-            var responseFind = GroupTeamMethods.Find(2);
+            var responseFind = groupTeamMethods.Find(lastItemOfTheList);
 
             // se for nulo, significa que o item foi apagado e o método funciona
             Assert.IsNull(responseFind);
@@ -76,9 +84,10 @@ namespace Study.Test
         [TestMethod]
         public void TestList()
         {
-            /// vejo se a lista da tabela não está nula
-            /// se não estiver, é porque o display está funcionando
-            var listTest = GroupTeamMethods.Display();
+            var groupTeamMethods = new GroupTeamMethods();
+            // vejo se a lista da tabela não está nula
+            // se não estiver, é porque o display está funcionando
+            var listTest = groupTeamMethods.Display();
             Assert.IsNotNull(listTest);
         }
     }
@@ -92,10 +101,12 @@ namespace Study.Test
     public class UserTest
     {
         [TestMethod]
-        public void TestCreatUser()
+        public void TestCreateUser()
         {
+            var userTeamMethods = new UserTeamMethods();
             // crio o objeto que irei enviar para o método de criar user
-            var userObject = new UserTeamDTO { 
+            var userObject = new UserTeamDTO
+            {
                 CreateDate = DateTime.Now,
                 FullName = "123 de Oliveira 4",
                 GroupTeamId = 1,
@@ -105,13 +116,13 @@ namespace Study.Test
             };
 
             // guardo quantos users tinham antes de eu criar o novo user
-            int usersBefore = UserTeamMethods.Display().Count;
+            int usersBefore = userTeamMethods.Display().Count;
 
             // crio o novo user
-            UserTeamMethods.Create(userObject);
+            userTeamMethods.Create(userObject);
 
             // guardo quantos users tem depois
-            int usersAfter = UserTeamMethods.Display().Count;
+            int usersAfter = userTeamMethods.Display().Count;
 
             // verifico se a quantidade de users antes + 1 é igual a quantidade de users agora
             // se sim, foi criado direitinho
@@ -121,6 +132,8 @@ namespace Study.Test
         [TestMethod]
         public void TestUpdateUser()
         {
+            var userTeamMethods = new UserTeamMethods();
+            var lastItemOfTheList = userTeamMethods.Display().LastOrDefault().UserTeamId;
             // Crio objeto com itens que vou modificar
             var userObject = new UserTeamDTO
             {
@@ -131,10 +144,10 @@ namespace Study.Test
             };
 
             // Faço o update, indicando qual item da tabela será modificado
-            UserTeamMethods.Update(1, userObject);
+            userTeamMethods.Update(lastItemOfTheList, userObject);
 
             // Guardo na variável o suposto usuário modificado,
-            var modifiedUser = UserTeamMethods.Find(1);
+            var modifiedUser = userTeamMethods.Find(lastItemOfTheList);
 
             // então verifico se alum item do meu objeto modificado está igual ao que está na base
             Assert.IsTrue(userObject.FullName == modifiedUser.FullName);
@@ -143,17 +156,20 @@ namespace Study.Test
         [TestMethod]
         public void TestDeleteUser()
         {
-            /// Deleta o item e depois verifica se o id do user está nulo
-            /// estando nulo, significa que foi deletado.
-            UserTeamMethods.Delete(1);
-            Assert.IsNull(UserTeamMethods.Find(1));
+            var userTeamMethods = new UserTeamMethods();
+            var lastItemOfTheList = userTeamMethods.Display().LastOrDefault().UserTeamId;
+            // Deleta o item e depois verifica se o id do user está nulo
+            // estando nulo, significa que foi deletado.
+            userTeamMethods.Delete(lastItemOfTheList);
+            Assert.IsNull(userTeamMethods.Find(lastItemOfTheList));
         }
 
         [TestMethod]
         public void TestDisplay()
         {
+            var userTeamMethods = new UserTeamMethods();
             // Verifica se a lista não retorna nula
-            Assert.IsNotNull(UserTeamMethods.Display());
+            Assert.IsNotNull(userTeamMethods.Display());
         }
     }
     #endregion

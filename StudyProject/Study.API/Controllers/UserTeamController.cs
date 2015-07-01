@@ -23,7 +23,8 @@ namespace Study.API.Controllers
         [ResponseType(typeof(UserTeamDTO))]
         public IHttpActionResult Get()
         {
-            return Ok(UserTeamMethods.Display());
+            var userTeamMethods = new UserTeamMethods();
+            return Ok(userTeamMethods.Display());
         }
 
         // pega user por id
@@ -32,7 +33,8 @@ namespace Study.API.Controllers
         [ResponseType(typeof(UserTeamDTO))]
         public IHttpActionResult GetById(int id)
         {
-            var found = UserTeamMethods.Find(id);
+            var userTeamMethods = new UserTeamMethods();
+            var found = userTeamMethods.Find(id);
             if (found == null)
             {
                 return BadRequest("The user could not be found.");
@@ -49,13 +51,14 @@ namespace Study.API.Controllers
         [ResponseType(typeof(string))]
         public IHttpActionResult Post(UserTeamDTO userToCreate)
         {
+            var userTeamMethods = new UserTeamMethods();
             if (userToCreate == null)
             {
                 return BadRequest("The user object is empty.");
             }
             else
             {
-                UserTeamMethods.Create(userToCreate);
+                userTeamMethods.Create(userToCreate);
 #warning Deve aplicado o ID na URI
                 return Created(new Uri("api/users", UriKind.Relative), "User created with success.");
             }
@@ -66,13 +69,14 @@ namespace Study.API.Controllers
         [Route("{id}")]
         public IHttpActionResult Put(int id, UserTeamDTO userToUpdate)
         {
-            if (UserTeamMethods.Find(id) == null)
+            var userTeamMethods = new UserTeamMethods();
+            if (userTeamMethods.Find(id) == null)
             {
                 return BadRequest("The user could not be found.");
             }
             else
             {
-                UserTeamMethods.Update(id, userToUpdate);
+                userTeamMethods.Update(id, userToUpdate);
                 return ResponseMessage(new HttpResponseMessage(HttpStatusCode.NoContent));
             }
         }
@@ -82,13 +86,14 @@ namespace Study.API.Controllers
         [Route("{id}")]
         public IHttpActionResult Delete(int id)
         {
-            if (UserTeamMethods.Find(id) == null)
+            var userTeamMethods = new UserTeamMethods();
+            if (userTeamMethods.Find(id) == null)
             {
                 return BadRequest("The user could not be found.");
             }
             else
             {
-                UserTeamMethods.Delete(id);
+                userTeamMethods.Delete(id);
                 return ResponseMessage(new HttpResponseMessage(HttpStatusCode.NoContent));
             }
         }

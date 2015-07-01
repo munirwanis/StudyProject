@@ -22,7 +22,8 @@ namespace Study.API.Controllers
         [ResponseType(typeof(GroupTeamDTO))]
         public IHttpActionResult Get()
         {
-            return Ok(GroupTeamMethods.Display());
+            var groupTeamMethods = new GroupTeamMethods();
+            return Ok(groupTeamMethods.Display());
         }
 
         // pego por grupo por id
@@ -31,7 +32,8 @@ namespace Study.API.Controllers
         [ResponseType(typeof(GroupTeamDTO))]
         public IHttpActionResult GetById(int id)
         {
-            var found = GroupTeamMethods.Find(id);
+            var groupTeamMethods = new GroupTeamMethods();
+            var found = groupTeamMethods.Find(id);
             if (found == null)
             {
                 return BadRequest("The item could not be found.");
@@ -48,13 +50,14 @@ namespace Study.API.Controllers
         [ResponseType(typeof(string))]
         public IHttpActionResult Post(GroupTeamDTO groupTeam)
         {
+            var groupTeamMethods = new GroupTeamMethods();
             if (groupTeam == null)
             {
                 return BadRequest();
             }
             else
             {
-                GroupTeamMethods.Create(groupTeam);
+                groupTeamMethods.Create(groupTeam);
                 var uri = new Uri("/api/group", UriKind.Relative);
                 return Created(uri,"Group created with success.");
             }
@@ -65,13 +68,14 @@ namespace Study.API.Controllers
         [Route("{id}")]
         public IHttpActionResult Put(int id, GroupTeamDTO groupToUpdate)
         {
-            if (GroupTeamMethods.Find(id) == null)
+            var update = new GroupTeamMethods();
+            if (update.Find(id) == null)
             {
                 return BadRequest("The item could not be found");
             }
             else
             {
-                GroupTeamMethods.Update(id, groupToUpdate);
+                update.Update(id, groupToUpdate);
 
 #warning Resposta com objeto genérico <T>
                 //var result = new HttpResponseMessage<GroupTeamDTO>(null, HttpStatusCode.NotFound);
@@ -89,13 +93,14 @@ namespace Study.API.Controllers
         [Route("{id}")]
         public IHttpActionResult Delete(int id)
         {
-            if (GroupTeamMethods.Find(id) == null)
+            var groupTeamMethods = new GroupTeamMethods();
+            if (groupTeamMethods.Find(id) == null)
             {
                 return BadRequest("The item doesn't exist.");
             }
             else
             {
-                GroupTeamMethods.Delete(id);
+                groupTeamMethods.Delete(id);
                 return ResponseMessage(new HttpResponseMessage(HttpStatusCode.NoContent));
             }
         }

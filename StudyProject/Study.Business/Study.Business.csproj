@@ -51,6 +51,7 @@
     <Compile Include="DTO\GroupTeamDTO.cs" />
     <Compile Include="DTO\UserTeamDTO.cs" />
     <Compile Include="GroupTeamMethods.cs" />
+    <Compile Include="IMethods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserTeamMethods.cs" />
   </ItemGroup>
