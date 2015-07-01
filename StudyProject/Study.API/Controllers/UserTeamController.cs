@@ -56,6 +56,7 @@ namespace Study.API.Controllers
             else
             {
                 UserTeamMethods.Create(userToCreate);
+#warning Deve aplicado o ID na URI
                 return Created(new Uri("api/users", UriKind.Relative), "User created with success.");
             }
         }

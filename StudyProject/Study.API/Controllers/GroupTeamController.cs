@@ -72,7 +72,15 @@ namespace Study.API.Controllers
             else
             {
                 GroupTeamMethods.Update(id, groupToUpdate);
+
+#warning Resposta com objeto genérico <T>
+                //var result = new HttpResponseMessage<GroupTeamDTO>(null, HttpStatusCode.NotFound);
+                
+                //var responseMSg =  Request.CreateResponse<GroupTeamDTO>(HttpStatusCode.OK, groupToUpdate);
+
                 return ResponseMessage(new HttpResponseMessage(HttpStatusCode.NoContent));
+
+                //return ResponseMessage(responseMSg);
             }
         }
 
