@@ -10,6 +10,7 @@ namespace Study.Business
         void Update(int someId, Q someDto);
         
         void Delete(int someId);
+
         List<T> Display();
 
         T Find(int someId);
