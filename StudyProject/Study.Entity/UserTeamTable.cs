@@ -12,23 +12,24 @@ namespace Study.Entity
 #warning Adicionar comentário
     public class UserTeamTable
     {
-        [Key]        
+        [Key]
         public int UserTeamId { get; set; }
-        
+
         [Required]
         [MaxLength(30)]
         public string Login { get; set; }
-        
+
         public string FullName { get; set; }
-        
+
         [DataType(DataType.DateTime)]
         public DateTime CreateDate { get; set; }
-        
+
         public bool IsEnabled { get; set; }
-        
+
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        
+
+
         public int GroupTeamId { get; set; }
 
         [ForeignKey("GroupTeamId")]

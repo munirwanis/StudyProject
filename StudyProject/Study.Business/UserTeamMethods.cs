@@ -31,6 +31,7 @@ namespace Study.Business
                 Login = userTeam.Login,
                 Password = userTeam.Password,
                 GroupTeamTable = groupTeamMethods.Find(userTeam.GroupTeamId)
+                
             };
 
             // conecta com a base

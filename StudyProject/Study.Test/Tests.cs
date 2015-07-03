@@ -103,13 +103,14 @@ namespace Study.Test
         [TestMethod]
         public void TestCreateUser()
         {
+            var groupTeamMethods = new GroupTeamMethods();
             var userTeamMethods = new UserTeamMethods();
             // crio o objeto que irei enviar para o método de criar user
             var userObject = new UserTeamDTO
             {
                 CreateDate = DateTime.Now,
                 FullName = "123 de Oliveira 4",
-                GroupTeamId = 1,
+                GroupTeamId = groupTeamMethods.Display().LastOrDefault().GroupTeamId,
                 IsEnabled = true,
                 Login = "testlogin",
                 Password = "m@hPswd123"
